@@ -1,0 +1,133 @@
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">  
+    <html xmlns="http://www.w3.org/1999/xhtml">  
+    <head>  
+{% load  static %}
+<script src="{% static 'jquery_1.10.2.js' %}"></script>
+    <title>Nutrition Rank Auto chat</title>  
+<script>
+/*
+$(document).ready(function(){
+  $("#NRchat").mouseover(function(){
+    $("#wrapper").css("display","block");
+  });
+  $("#NRchat").mouseout(function(){
+    $("#wrapper").css("display","none");
+  });
+});
+*/
+
+function dispChat(){
+//document.getElementById("chatbox").style.display="block";
+$("#wrapper").toggle("slow");
+}
+
+function getResult(){
+var message=document.getElementById("usermsg").value;
+e=document.getElementById("chatbox");
+e.appendChild(document.createElement("br")) ;
+e.innerHTML+="User:"+" "+message;
+$.ajax({
+  url:"/searching",
+  type:"POST",
+  dataType:"json",
+  data:{'message':message},
+  success:function(result){
+   e.appendChild(document.createElement("br")) ;
+   e.innerHTML+="Admin : "+result.message;
+   e.appendChild(document.createElement("br"))
+//   alert(result.message);
+     },
+  error:function(xhr){alert( "error" );}
+});
+
+}
+
+</script>
+
+<style>
+
+body {
+    font:12px arial;
+    color: #480000 ;
+    text-align:center;
+    padding:35px; }
+
+form, p, span {
+    margin:0;
+    padding:0; }
+
+input { font:12px arial; }
+
+a {
+    color:#0000FF;
+    text-decoration:none; }
+
+   a:hover { text-decoration:underline; }
+
+#wrapper, #loginform {
+    margin:0 auto;
+    padding-bottom:25px;
+    background:#00B000 ;
+    width:504px;
+    border:1px solid #ACD8F0;
+    display:none;
+}
+
+#chatbox {
+    text-align:left;
+    margin:0 auto;
+    margin-bottom:25px;
+    padding:10px;
+    height:270px;
+    background:#fff;
+    width:430px;
+    border:2px solid #480000 ;
+    overflow:auto;
+     }
+
+#usermsg {
+    width:395px;
+    border:1px solid #ACD8F0; }
+
+#submit { width: 60px; }
+
+
+#menu { padding:12.5px 25px 12.5px 25px; }
+
+.welcome { float:left; }
+
+.logout { float:right ; }
+
+.msgln { margin:0 0 2px 0; }
+#main{
+ margin:0 auto;
+    padding-bottom:55px;
+    width:800px;
+}
+
+
+</style>
+
+    </head>
+<body>  
+   <div id="main">   
+    <div id="start"> 
+   <a id="NRchat" onclick= "dispChat()"  >Ask a  Question </a>
+</div>
+    <div id="wrapper">  
+        <div id="menu">  
+            <p class="welcome">Welcome, <b></b></p>  
+            <p class="logout"><a id="exit" href="#">Exit</a></p>  
+            <div style="clear:both"></div>  
+        </div>  
+          
+      <div id="chatbox"></div>  
+          
+        <form name="message"  >  
+            <input name="usermsg" type="text" id="usermsg" size="63" />  
+            <input name="submitmsg" type="button"  id="submitmsg" value="Send" onclick="getResult()" />  
+        </form>  
+    </div>  
+</div>
+    </body>  
+    </html>  
